@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+     <head>
+          <link rel="stylesheet" href="/staticFiles/style.css" />
+     </head>
+     <body>
+          <h1>Choose Image to upload</h1>
+
+          <div class="box">
+
+          <form id ="form" method="POST" class="form" enctype="multipart/form-data" action="/">
+
+               <input id="file" class="upload-btn" type="file" name="uploaded-file" accept=".jpg" multiple="false">
+
+               <input type="submit"  class="submit-btn" value="Submit" />
+
+          </form>
+          
+          <br />
+          <br />
+          <form action="/show_image" class="form" target="_blank">
+               <input type="submit" class="submit-btn" value="Display Image" />
+          </form>
+
+          <br />
+          <br />
+          <form action="/detect_object"  class="form" target="_blank">
+               <input type="submit" class="submit-btn" value="Detect Object" />
+          </form>
+
+     </div>
+     </body>
+</html>
