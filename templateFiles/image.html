@@ -4,20 +4,36 @@
           <link rel="stylesheet" href="/staticFiles/style.css" />
      </head>
      <body>
-          <div class="box">
+          <table style="width:100%">
+               <tr>
+                    <th> <h1>Uploaded Image</h1> </th>
+                    <th> <h1>Detected Image</h1> </th>
+                  </tr>
+          </table>
+
+          <div class="box1">
           
           <img
-               src="{{ user_image }}"
+               src="{{ initial_image }}"
                alt="Italian Trulli"
-               width="800"
+               width="720"
                height="600"
           />
 
-          <br />
-          <br />
-          <form action="/detect_object"  class="form" target="_blank">
-               <input type="submit" class="submit-btn" value="Detect Object" />
+          <img
+               src="{{ user_image }}"
+               alt="Italian Trulli"
+               width="720"
+               height="600"
+          />
+          
+     <!-- </div>
+          <div class="box">
+          <form action="/"  class="form1" target="_blank">
+               <input type="submit" class="submit-btn" value="home" />
           </form>
-     </div>
+
+     </div> -->
+     
      </body>
 </html>

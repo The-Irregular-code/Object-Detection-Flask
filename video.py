@@ -8,7 +8,7 @@ import pathlib
 from model import create_model
 
 CLASSES = ['Flute', 'Bed', 'Bridge', 'Broom', 'Door', 'Fencing', 'Grain Storage', 'Hand Fan', 'House', 'Mask', 'Jakoi', 'Khaloi',
-           'Winnowing Fan', 'Gogona', 'Dhol', 'Pepa', 'Toka', 'Julki', 'Conical Hat']
+           'Dhol', 'Pepa', 'Japi', 'Gogona', 'Winnowing Fan', 'Toka', 'Julki']
 
 NUM_CLASSES = len(CLASSES)
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -28,7 +28,7 @@ COLORS = np.random.uniform(0, 255, size=(len(CLASSES), 3))
 
 
 model = create_model(num_classes=NUM_CLASSES)
-model.load_state_dict(torch.load('Axom.pth', map_location=DEVICE))
+model.load_state_dict(torch.load('Axom2.pth', map_location=DEVICE))
 model.eval()
 
 detection_threshold = 0.8

@@ -8,24 +8,20 @@
 
           <div class="box">
 
-          <form id ="form" method="POST" class="form" enctype="multipart/form-data" action="/">
+          <form id ="form" method="POST" class="form" enctype="multipart/form-data" action="/detect_object">
 
-               <input id="file" class="upload-btn" type="file" name="uploaded-file" accept=".jpg" multiple="false">
 
-               <input type="submit"  class="submit-btn" value="Submit" />
+               <div class="input-group">
+				<label for="image_url">Enter an Image URL:</label>
+				<input id="image_url" type="url" name="image">
+			</div>
+			
+			<h3>or</h3>
 
-          </form>
-          
-          <br />
-          <br />
-          <form action="/show_image" class="form" target="_blank">
-               <input type="submit" class="submit-btn" value="Display Image" />
-          </form>
+               <input id="file" class="upload-btn" type="file" name="uploaded-file" accept=".jpg,.png,.jpeg" multiple="false">
 
-          <br />
-          <br />
-          <form action="/detect_object"  class="form" target="_blank">
-               <input type="submit" class="submit-btn" value="Detect Object" />
+               <input type="submit"  class="submit-btn" value="display and detect" />
+
           </form>
 
      </div>

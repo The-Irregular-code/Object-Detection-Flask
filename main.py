@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, session
 import os
+import wget
 import cv2
 from werkzeug.utils import secure_filename
 import numpy as np
@@ -8,7 +9,7 @@ import torch
 from model import create_model
 
 UPLOAD_FOLDER = os.path.join('staticFiles', 'uploads')
-ALLOWED_EXTENSIONS = {'jpg'}
+ALLOWED_EXTENSIONS = {'jpg', 'jpeg', 'png'}
 
 app = Flask(__name__, template_folder='templateFiles',
             static_folder='staticFiles')
@@ -18,26 +19,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.secret_key = 'Password'
 
 CLASSES = ['Flute', 'Bed', 'Bridge', 'Broom', 'Door', 'Fencing', 'Grain Storage', 'Hand Fan', 'House', 'Mask', 'Jakoi', 'Khaloi',
-           'Dhol', 'Pepa', 'Japi', 'Gogona', 'Winnowing Fan', 'Toka', 'Julki']
-
-# CLASSES = ['Flute',
-#            'Jakoi',
-#            'Khaloi',
-#            'ban bati',
-#            'Bell Metal Bota',
-#            'Bell Metal Spoon',
-#            'bell metal bowl',
-#            'Bell Metal Plate',
-#            'Ban Bati',
-#            'Bell Metal Glass',
-#            'bell metal bota',
-#            'bell metel cymbal',
-#            'Jaw harp',
-#            'Dhol',
-#            'Pepa',
-#            'Toka',
-#            'Julki',
-#            'Conical Hat']
+           'Dhol', 'Pepa', 'Conical Hat', 'Gogona', 'Winnowing Fan', 'Toka', 'Julki']
 
 NUM_CLASSES = len(CLASSES)
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -76,8 +58,8 @@ def detect_object(uploaded_image_path):
                           (0, 0, 255), 2)
             cv2.putText(orig_image, pred_classes[j],
                         (int(box[0]), int(box[1]-5)),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0),
-                        2, lineType=cv2.LINE_AA)
+                        cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0),
+                        3, lineType=cv2.LINE_AA)
         output_image_path = os.path.join(
             app.config['UPLOAD_FOLDER'], 'output_image.jpg')
         cv2.imwrite(output_image_path, orig_image)
@@ -89,31 +71,27 @@ def index():
     return render_template('home.html')
 
 
-@app.route('/',  methods=("POST", "GET"))
-def uploadFile():
-    if request.method == 'POST':
-        uploaded_img = request.files['uploaded-file']
-        img_filename = secure_filename(uploaded_img.filename)
-        uploaded_img.save(os.path.join(
-            app.config['UPLOAD_FOLDER'], img_filename))
-
-        session['uploaded_img_file_path'] = os.path.join(
-            app.config['UPLOAD_FOLDER'], img_filename)
-
-        return render_template('home.html')
-
-
-@app.route('/show_image')
-def displayImage():
-    img_file_path = session.get('uploaded_img_file_path', None)
-    return render_template('image.html', user_image=img_file_path)
-
-
-@app.route('/detect_object')
+@app.route('/detect_object', methods=("POST", "GET"))
 def detectObject():
-    uploaded_image_path = session.get('uploaded_img_file_path', None)
-    output_image_path = detect_object(uploaded_image_path)
-    return render_template('image.html', user_image=output_image_path)
+    if request.method == 'POST':
+
+        uploaded_img = request.files['uploaded-file']
+        if uploaded_img.filename == '':
+            url = request.form['image']
+            uploaded_image_path = wget.download(url, UPLOAD_FOLDER)
+
+        else:
+            img_filename = secure_filename(uploaded_img.filename)
+            uploaded_img.save(os.path.join(
+                app.config['UPLOAD_FOLDER'], img_filename))
+
+            session['uploaded_img_file_path'] = os.path.join(
+                app.config['UPLOAD_FOLDER'], img_filename)
+
+            uploaded_image_path = session.get('uploaded_img_file_path', None)
+
+        output_image_path = detect_object(uploaded_image_path)
+        return render_template('image.html', initial_image=uploaded_image_path, user_image=output_image_path)
 
 
 @app.after_request
@@ -126,4 +104,4 @@ def add_header(response):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(port=3000, debug=True)
