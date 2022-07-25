@@ -8,7 +8,7 @@ import pathlib
 from model import create_model
 
 CLASSES = ['Flute', 'Bed', 'Bridge', 'Broom', 'Door', 'Fencing', 'Grain Storage', 'Hand Fan', 'House', 'Mask', 'Jakoi', 'Khaloi',
-           'Dhol', 'Pepa', 'Japi', 'Gogona', 'Winnowing Fan', 'Toka', 'Julki']
+           'Dhol', 'Pepa', 'Conical Hat', 'Jaw Harp', 'Winnowing Fan', 'Toka', 'Julki']
 
 NUM_CLASSES = len(CLASSES)
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -21,18 +21,13 @@ parser.add_argument(
 args = vars(parser.parse_args())
 COLORS = np.random.uniform(0, 255, size=(len(CLASSES), 3))
 
-# model = create_model(num_classes=NUM_CLASSES)
-# checkpoint = torch.load('Axom.pth', map_location=DEVICE)
-# model.load_state_dict(checkpoint['model_state_dict'])
-# model.to(DEVICE).eval()
-
 
 model = create_model(num_classes=NUM_CLASSES)
-model.load_state_dict(torch.load('Axom2.pth', map_location=DEVICE))
+model.load_state_dict(torch.load('model.pth', map_location=DEVICE))
 model.eval()
 
 detection_threshold = 0.8
-RESIZE_TO = (512, 512)
+RESIZE_TO = (720, 540)
 cap = cv2.VideoCapture(args['input'])
 if (cap.isOpened() == False):
     print('Error while trying to read video. Please check path again')

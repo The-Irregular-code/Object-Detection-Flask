@@ -19,13 +19,13 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.secret_key = 'Password'
 
 CLASSES = ['Flute', 'Bed', 'Bridge', 'Broom', 'Door', 'Fencing', 'Grain Storage', 'Hand Fan', 'House', 'Mask', 'Jakoi', 'Khaloi',
-           'Dhol', 'Pepa', 'Conical Hat', 'Gogona', 'Winnowing Fan', 'Toka', 'Julki']
+           'Dhol', 'Pepa', 'Japi', 'Gogona', 'Winnowing Fan', 'Toka', 'Julki']
 
 NUM_CLASSES = len(CLASSES)
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 model = create_model(num_classes=NUM_CLASSES)
-model.load_state_dict(torch.load('Axom2.pth', map_location=DEVICE))
+model.load_state_dict(torch.load('model.pth', map_location=DEVICE))
 model.eval()
 
 detection_threshold = 0.8

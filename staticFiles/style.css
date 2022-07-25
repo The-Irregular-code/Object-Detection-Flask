@@ -2,7 +2,8 @@
 body {
 	margin: 0 auto;
 	padding: 0;
-    background:lightblue;
+    /* background:lightblue; */
+    background:white;
 	background-size: cover;
 	background-repeat: no-repeat;
 	font-family: 'Times New Roman';
@@ -28,10 +29,10 @@ h1 {
     letter-spacing: 1px;
     margin-bottom: 3rem;
     text-transform: uppercase;
-    color: white;
+    color: black;
 }
 .form {
-    top: 20%;
+    top: 25%;
     height: auto;
     display: flex;
     position: absolute;
